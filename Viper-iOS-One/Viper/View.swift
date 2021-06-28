@@ -30,6 +30,9 @@ class UserViewController: UIViewController, AnyView, UITableViewDelegate, UITabl
         return table
     }()
     
+    var users: [User] = []
+    
+    
 
 
     override func viewDidLoad() {
@@ -48,20 +51,32 @@ class UserViewController: UIViewController, AnyView, UITableViewDelegate, UITabl
     
     
     
+    
+    
     func update(with users: [User]) {
+        print("got users")
+        DispatchQueue.main.async {
+            self.users = users
+            self.tableView.reloadData()
+            self.tableView.isHidden = false
+        }
+       
         
     }
     
     func update(with error: String) {
-        
+        print(error)
     }
     
+    //table
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return users.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = users[indexPath.row].name
+        return cell
     }
     
     
