@@ -30,6 +30,14 @@ class UserViewController: UIViewController, AnyView, UITableViewDelegate, UITabl
         return table
     }()
     
+    
+    private let label: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
+    }()
+    
     var users: [User] = []
     
     
@@ -37,6 +45,8 @@ class UserViewController: UIViewController, AnyView, UITableViewDelegate, UITabl
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(label)
+        label.center = view.center
         view.backgroundColor = .systemBlue
         view.addSubview(tableView)
         tableView.delegate = self
@@ -47,6 +57,9 @@ class UserViewController: UIViewController, AnyView, UITableViewDelegate, UITabl
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
+        label.frame = CGRect(x: 0, y: 0, width: 200, height: 50)
+        label.center = view.center
+        
     }
     
     
@@ -65,7 +78,13 @@ class UserViewController: UIViewController, AnyView, UITableViewDelegate, UITabl
     }
     
     func update(with error: String) {
-        print(error)
+        DispatchQueue.main.async {
+            self.users = []
+            self.label.text = error
+            self.tableView.isHidden = true
+            self.label.isHidden = false
+        }
+       
     }
     
     //table
